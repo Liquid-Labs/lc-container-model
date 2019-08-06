@@ -1,0 +1,42 @@
+{
+  "name": "@liquid-labs/lc-containers-model",
+  "version": "1.0.0-alpha-0",
+  "description": "A standard locations model for Liquid Code + compatible projects (in go).",
+  "scripts": {
+    "prebuild": "rm -rf ./dist/* && mkdir -p ./dist",
+    "build": "catalyst-scripts build",
+    "pretest": "catalyst-scripts pretest",
+    "test": "catalyst-scripts test",
+    "lint": "catalyst-scripts lint",
+    "lint-fix": "catalyst-scripts lint-fix",
+    "postversion": "git push && git push --tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Liquid-Labs/lc-containers-model.git"
+  },
+  "author": "Zane Rockenbaugh <zane@liquid-labs.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Liquid-Labs/lc-containers-model/issues"
+  },
+  "homepage": "https://github.com/Liquid-Labs/lc-containers-model#readme",
+  "catalyst": {
+    "requires": [
+      {
+        "iface": "sql",
+        "params-req": [],
+        "params-opt": [],
+        "config-const": []
+      }
+    ]
+  },
+  "devDependencies": {
+    "@liquid-labs/catalyst-scripts": "^1.0.0-alpha.22",
+    "@liquid-labs/lc-rdb-service": "^1.0.0-alpha.0",
+    "@liquid-labs/liquid-dev-cloudsql": "^1.0.0-prototype.0"
+  },
+  "dependencies": {
+    "@liquid-labs/lc-entities-model": "^1.0.0-alpha.0"
+  }
+}
