@@ -11,16 +11,15 @@ type Container struct {
 }
 
 func NewContainer(
-    exemplar Identifiable,
+    resourceName ResourceName,
     name string,
     description string,
     ownerID EID,
     publiclyReadable bool,
     members []*Entity) *Container {
   return &Container{
-    struct{}{},
-    *NewEntity(exemplar, name, description, ownerID, publiclyReadable),
-    members,
+    Entity: *NewEntity(resourceName, name, description, ownerID, publiclyReadable),
+    Members: members,
   }
 }
 

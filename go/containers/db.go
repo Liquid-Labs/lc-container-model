@@ -27,8 +27,8 @@ func (c *Container) createMembers(db orm.DB) Terror {
 }
 
 // Create creates (or inserts) a new Container record into the DB. As Containers are logically abstract, one would typically only call this as part of another items create sequence.
-func (c *Container) Create(db orm.DB) Terror {
-  if err := (&c.Entity).Create(db); err != nil {
+func (c *Container) CreateRaw(db orm.DB) Terror {
+  if err := CreateEntityRaw(c, db); err != nil {
     return err
   } else {
     qs := db.Model(c).ExcludeColumn(EntityFields...)
@@ -46,8 +46,8 @@ func init() {
   updateExcludes = append(updateExcludes, "id")
 }
 // Update updates a container record in the DB. As Containers are logically abstract, one would typically only call this as part of another items update sequence.
-func (c *Container) Update(db orm.DB) Terror {
-  if err := (&c.Entity).Update(db); err != nil {
+func (c *Container) UpdateRaw(db orm.DB) Terror {
+  if err := (&c.Entity).UpdateRaw(db); err != nil {
     return err
   } else { /* If all columns are excluded, go-pg ignores exclusions.
     qu := db.Model(c).
@@ -64,6 +64,6 @@ func (c *Container) Update(db orm.DB) Terror {
 }
 
 // Archive updates a Container record in the DB. As Containers are logically abstract, one would typically only call this as part of another items archive sequence.
-func (c *Container) Archive(db orm.DB) Terror {
-  return (&c.Entity).Archive(db)
+func (c *Container) ArchiveRaw(db orm.DB) Terror {
+  return (&c.Entity).ArchiveRaw(db)
 }

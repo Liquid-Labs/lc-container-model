@@ -19,13 +19,6 @@ import (
   /* pkg2test */ . "github.com/Liquid-Labs/lc-containers-model/go/containers"
 )
 
-type TestUser struct {
-  User
-}
-func (tu *TestUser) GetResourceName() ResourceName {
-  return ResourceName(`testusers`)
-}
-
 func init() {
   terror.EchoErrorLog()
   rand.Seed(time.Now().UnixNano())
@@ -72,15 +65,15 @@ func (s *ContainerIntegrationSuite) SetupSuite() {
   db := rdb.Connect()
 
   authID := randStringBytes()
-  s.U = NewUser(&TestUser{}, `User1`, ``, authID, legalID, legalIDType, active)
-  require.NoError(s.T(), s.U.Create(db))
+  s.U = NewUser(`users`, `User1`, ``, authID, legalID, legalIDType, active)
+  require.NoError(s.T(), s.U.CreateRaw(db))
   // log.Printf("User1: %s", s.User1.GetID())
 
   s.Thing1 = &Entity{ResourceName:`things`, Name:`Thing1`, OwnerID: s.U.GetID()}
-  require.NoError(s.T(), s.Thing1.Create(rdb.Connect()), `Unexpected error creating entity`)
+  require.NoError(s.T(), CreateEntityRaw(s.Thing1, rdb.Connect()), `Unexpected error creating entity`)
 
   s.Thing2 = &Entity{ResourceName:`things`, Name:`Thing2`, OwnerID: s.U.GetID()}
-  require.NoError(s.T(), s.Thing2.Create(rdb.Connect()), `Unexpected error creating entity`)
+  require.NoError(s.T(), CreateEntityRaw(s.Thing2, rdb.Connect()), `Unexpected error creating entity`)
 }
 func TestContainerIntegrationSuite(t *testing.T) {
   if os.Getenv(`SKIP_INTEGRATION`) == `true` {
@@ -95,7 +88,7 @@ func (s *ContainerIntegrationSuite) TestContainerCreateNoMembers() {
     Entity: Entity{ResourceName:`containers`, Name:`Container1`, OwnerID: s.U.GetID()},
     Members: make([]*Entity, 0),
   }
-  require.NoError(s.T(), c.Create(rdb.Connect()), `Unexpected error creating container`)
+  require.NoError(s.T(), c.CreateRaw(rdb.Connect()), `Unexpected error creating container`)
   assert.Equal(s.T(), `Container1`, c.GetName())
   assert.Equal(s.T(), ResourceName(`containers`), c.GetResourceName())
   assert.Equal(s.T(), s.U.GetID(), c.GetOwnerID())
@@ -112,7 +105,7 @@ func (s *ContainerIntegrationSuite) TestContainerCreateWithMembers() {
     Entity: Entity{ResourceName:`containers`, Name:`Container2`, OwnerID: s.U.GetID()},
     Members: []*Entity{s.Thing1, s.Thing2},
   }
-  require.NoError(s.T(), c.Create(rdb.Connect()), `Unexpected error creating container`)
+  require.NoError(s.T(), c.CreateRaw(rdb.Connect()), `Unexpected error creating container`)
 
   assert.Equal(s.T(), `Container2`, c.GetName())
   assert.Equal(s.T(), ResourceName(`containers`), c.GetResourceName())
@@ -132,7 +125,7 @@ func (s *ContainerIntegrationSuite) TestContainerRetrieveWithMembers() {
     Entity: Entity{ResourceName:`containers`, Name:`Container3`, OwnerID: s.U.GetID()},
     Members: []*Entity{s.Thing1, s.Thing2},
   }
-  require.NoError(s.T(), c.Create(rdb.Connect()), `Unexpected error creating container`)
+  require.NoError(s.T(), c.CreateRaw(rdb.Connect()), `Unexpected error creating container`)
 
   cCopy, err := retrieveContainer(c.GetID())
   require.NoError(s.T(), err)
@@ -144,13 +137,13 @@ func (s *ContainerIntegrationSuite) TestContainersUpdate() {
     Entity: Entity{ResourceName:`containers`, Name:`Update Container`, OwnerID: s.U.GetID()},
     Members: []*Entity{s.Thing1},
   }
-  require.NoError(s.T(), c.Create(rdb.Connect()), `Unexpected error creating container`)
+  require.NoError(s.T(), c.CreateRaw(rdb.Connect()), `Unexpected error creating container`)
 
   c.SetName(`New Name`)
   c.SetDescription(`bar`)
   c.SetPubliclyReadable(true)
   c.SetMembers([]*Entity{s.Thing2})
-  require.NoError(s.T(), c.Update(rdb.Connect()))
+  require.NoError(s.T(), c.UpdateRaw(rdb.Connect()))
   assert.Equal(s.T(), `New Name`, c.GetName())
   assert.Equal(s.T(), `bar`, c.GetDescription())
   assert.Equal(s.T(), true, c.IsPubliclyReadable())
@@ -167,8 +160,8 @@ func (s *ContainerIntegrationSuite) TestContainerArchive() {
     Entity: Entity{ResourceName:`containers`, Name:`Update Container`, OwnerID: s.U.GetID()},
     Members: []*Entity{s.Thing1},
   }
-  require.NoError(s.T(), c.Create(rdb.Connect()), `Unexpected error creating container`)
-  require.NoError(s.T(), c.Archive(rdb.Connect()))
+  require.NoError(s.T(), c.CreateRaw(rdb.Connect()), `Unexpected error creating container`)
+  require.NoError(s.T(), c.ArchiveRaw(rdb.Connect()))
   log.Printf(`c: %+v`, c)
 
   eCopy, err := retrieveContainer(c.GetID())
