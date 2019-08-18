@@ -1,8 +1,7 @@
 package containers_test
 
 import (
-  "log"
-  "math/rand"
+  // "log"
   "os"
   "testing"
   "time"
@@ -13,6 +12,7 @@ import (
   "github.com/stretchr/testify/suite"
 
   "github.com/Liquid-Labs/lc-rdb-service/go/rdb"
+  "github.com/Liquid-Labs/strkit/go/strkit"
   "github.com/Liquid-Labs/terror/go/terror"
   . "github.com/Liquid-Labs/lc-entities-model/go/entities"
   . "github.com/Liquid-Labs/lc-users-model/go/users"
@@ -21,18 +21,6 @@ import (
 
 func init() {
   terror.EchoErrorLog()
-  rand.Seed(time.Now().UnixNano())
-}
-
-const runes = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_./"
-const aznLength = 16
-
-func randStringBytes() string {
-    b := make([]byte, aznLength)
-    for i := range b {
-        b[i] = runes[rand.Int63() % int64(len(runes))]
-    }
-    return string(b)
 }
 
 func retrieveContainer(id EID) (*Container, terror.Terror) {
@@ -64,7 +52,7 @@ type ContainerIntegrationSuite struct {
 func (s *ContainerIntegrationSuite) SetupSuite() {
   db := rdb.Connect()
 
-  authID := randStringBytes()
+  authID := strkit.RandString(strkit.LettersAndNumbers, 16)
   s.U = NewUser(`users`, `User1`, ``, authID, legalID, legalIDType, active)
   require.NoError(s.T(), s.U.CreateRaw(db))
   // log.Printf("User1: %s", s.User1.GetID())
@@ -162,7 +150,6 @@ func (s *ContainerIntegrationSuite) TestContainerArchive() {
   }
   require.NoError(s.T(), c.CreateRaw(rdb.Connect()), `Unexpected error creating container`)
   require.NoError(s.T(), c.ArchiveRaw(rdb.Connect()))
-  log.Printf(`c: %+v`, c)
 
   eCopy, err := retrieveContainer(c.GetID())
   require.NoError(s.T(), err)

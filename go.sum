@@ -6,6 +6,8 @@ github.com/Liquid-Labs/lc-rdb-service v1.0.0-alpha.1 h1:G43nWx1m3VlAVQ1nYlqg8OQm
 github.com/Liquid-Labs/lc-rdb-service v1.0.0-alpha.1/go.mod h1:gxFUZNNALQeg00EX+l81JLGDJX6vvIFfLaKfJzBF+Ms=
 github.com/Liquid-Labs/lc-users-model v1.0.0-alpha.0 h1:nyVbRyybJ6JFopr0OL6hxr1Z2d3FxqZgJ0CCUcws73o=
 github.com/Liquid-Labs/lc-users-model v1.0.0-alpha.0/go.mod h1:aRZhAn4NGnQbkrA1NrL6eEcyr8by7DO/JonQDdSlyHI=
+github.com/Liquid-Labs/strkit v0.0.0-20190818184832-9e3e35dcfc9c h1:gafENUJa+Gs+brz7YHwfgTMlfoAfB9L/SU5KW5p9ec4=
+github.com/Liquid-Labs/strkit v0.0.0-20190818184832-9e3e35dcfc9c/go.mod h1:fyr/0G+VniC6Q0D4mmRaUZBvMhsGmXdJDphCZyYozkY=
 github.com/Liquid-Labs/terror v1.0.0-alpha.0 h1:X9gEW6Ih9QcJ+e5k83kdGoW5MC9ETvfT+0P7RgxTujs=
 github.com/Liquid-Labs/terror v1.0.0-alpha.0/go.mod h1:MrllZ172GtwBFSm+HOpKcctvbVsN1L7Sul0KgOzw+nY=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
@@ -35,6 +37,8 @@ github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+
 github.com/stretchr/objx v0.2.0/go.mod h1:qt09Ya8vawLte6SNmTgCsAVtYtaKzEcn8ATUoHMkEqE=
 github.com/stretchr/testify v1.3.0 h1:TivCn/peBQ7UY8ooIcPgZFpTNSz0Q2U6UrFlUfqbe0Q=
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
+github.com/stretchr/testify v1.4.0 h1:2E4SXV/wtOkTonXsotYi4li6zVWxYlZuYNCXe9XRJyk=
+github.com/stretchr/testify v1.4.0/go.mod h1:j7eGeouHqKxXV5pUuKE4zz7dFj8WfuZ+81PSLYec5m4=
 github.com/vmihailenco/tagparser v0.1.0/go.mod h1:OeAg3pn3UbLjkWt+rN9oFYB6u/cQgqMEUPoW2WPyhdI=
 golang.org/x/crypto v0.0.0-20180910181607-0e37d006457b/go.mod h1:6SG95UA2DQfeDnfUPMdvaQW0Q7yPrPDi9nlGo2tz2b4=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2 h1:VklqNMn3ovrHsnt90PveolxSbWFaJdECFbxSq0Mqo2M=
@@ -59,5 +63,7 @@ gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127/go.mod h1:Co6ibVJAznAaIkqp8
 gopkg.in/fsnotify.v1 v1.4.7/go.mod h1:Tz8NjZHkW78fSQdbUxIjBTcgA1z1m8ZHf0WmKUhAMys=
 gopkg.in/tomb.v1 v1.0.0-20141024135613-dd632973f1e7/go.mod h1:dt/ZhP58zS4L8KSrWDmTeBkI65Dw0HsyUHuEVlX15mw=
 gopkg.in/yaml.v2 v2.2.1/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
+gopkg.in/yaml.v2 v2.2.2 h1:ZCJp+EgiOT7lHqUV2J862kp8Qj64Jo6az82+3Td9dZw=
+gopkg.in/yaml.v2 v2.2.2/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
 mellium.im/sasl v0.2.1 h1:nspKSRg7/SyO0cRGY71OkfHab8tf9kCts6a6oTDut0w=
 mellium.im/sasl v0.2.1/go.mod h1:ROaEDLQNuf9vjKqE1SrAfnsobm2YKXT1gnN1uDp1PjQ=
