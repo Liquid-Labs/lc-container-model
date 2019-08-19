@@ -7,6 +7,8 @@ import (
   . "github.com/Liquid-Labs/lc-entities-model/go/entities"
 )
 
+var ContainerFields = append(EntityFields, `members`)
+
 // ModelContainer provides a(n initially empty) Entity receiver and base query.
 func ModelContainer(db orm.DB) (*Container, *orm.Query) {
   c := &Container{}
@@ -16,13 +18,17 @@ func ModelContainer(db orm.DB) (*Container, *orm.Query) {
 }
 
 func (c *Container) createMembers(db orm.DB) Terror {
-  for _, member := range c.GetMembers() {
-    member := &ContainerMembers{c.GetID(), member.GetID()}
-    if _, err := db.Model(member).Insert(); err != nil {
+  if 0 < len(c.GetMembers()) {
+    newMembers := make([]*ContainerMembers, 0)
+    for _, member := range c.GetMembers() {
+      newMembers = append(newMembers,
+        &ContainerMembers{c.GetID(), member.GetID()})
+    }
+
+    if _, err := db.Model(&newMembers).Insert(); err != nil {
       return ServerError(`There was a problem creating container members.`, err)
     }
   }
-
   return nil
 }
 
@@ -49,17 +55,12 @@ func init() {
 func (c *Container) UpdateRaw(db orm.DB) Terror {
   if err := (&c.Entity).UpdateRaw(db); err != nil {
     return err
-  } else { /* If all columns are excluded, go-pg ignores exclusions.
-    qu := db.Model(c).
-      ExcludeColumn(updateExcludes...).
-      Where(`"container".id=?id`)
-    qu.GetModel().Table().SoftDeleteField = nil
-    if _, err := qu.Update(); err != nil {
-      return ServerError(`There was a problem updating the container record.`, err)
-    } else {*/
-      db.Exec(`DELETE FROM container_members WHERE container_id=?`, c.GetID())
-      return c.createMembers(db)
-    // }
+  } else {
+    // We don't need to update the 'container' record itself; it's just an ID. Besides, ff all columns are excluded, go-pg (v8.0.5) ignores exclusions.
+    if _, err := db.Exec(`DELETE FROM container_members WHERE container_id=?`, c.GetID()); err != nil {
+      return ServerError(`Problem updataing container members.`, err)
+    }
+    return c.createMembers(db)
   }
 }
 
